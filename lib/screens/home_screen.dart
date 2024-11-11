@@ -52,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
+            DrawerHeader(
+              decoration: const BoxDecoration(
                 color: Colors.black38,
                 image: DecorationImage(
                   image: AssetImage('assets/images/MainMenu.png'),
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Align(
                 alignment: Alignment.bottomLeft,
-                child: Text(
+                child: const Text(
                   'Main Menu',
                   style: TextStyle(
                       color: Colors.white,

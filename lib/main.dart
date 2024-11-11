@@ -13,7 +13,6 @@ class ChillInkApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.black,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen(),
       debugShowCheckedModeBanner: false,

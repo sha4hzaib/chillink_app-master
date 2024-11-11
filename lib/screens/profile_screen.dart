@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -10,7 +11,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _passwordController = TextEditingController();
   bool _isLoggedIn = false;
   double _scale = 1.0;
-  double _previousScale = 1.0;
 
   void _login() {
     if (_usernameController.text == 'basil' && _passwordController.text == '1234') {
@@ -75,26 +75,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 50),
-          GestureDetector(
+          SimpleGestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FullScreenImageView(),
+                ),
+              );
+            },
             onDoubleTap: () {
               setState(() {
                 _scale = 1.0;
               });
             },
-            onScaleStart: (details) {
-              _previousScale = _scale;
-            },
-            onScaleUpdate: (details) {
-              setState(() {
-                double newScale = _previousScale * details.scale;
-                if (newScale < 1.0) {
-                  _scale = 1.0; // Minimum scale
-                } else if (newScale > 3.0) {
-                  _scale = 3.0; // Maximum scale
-                } else {
-                  _scale = newScale;
-                }
-              });
+            onHorizontalSwipe: (direction) {
+              if (direction == SwipeDirection.left) {
+                Navigator.pop(context);
+              }
             },
             child: Transform.scale(
               scale: _scale,
@@ -111,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
-          _buildProfileDetailRow(Icons.phone, 'Phone Number', '03355368970'),
+          _buildProfileDetailRow(Icons.phone, 'Phone Number', '03355123512'),
           _buildProfileDetailRow(Icons.email, 'Email', 'basil1234@gmail.com'),
           _buildProfileDetailRow(Icons.location_on, 'Address', 'riphah-14 campus, Islamabad, Pakistan'),
         ],
@@ -140,6 +138,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FullScreenImageView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Center(
+        child: InteractiveViewer(
+          minScale: 1.0,
+          maxScale: 4.0,
+          child: Image.asset('assets/images/profile.jpg'),
+        ),
       ),
     );
   }

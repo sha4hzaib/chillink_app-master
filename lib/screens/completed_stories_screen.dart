@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-final List<String> completedStories = [];
 
+final List<String> completedStories = [];
 class CompletedStoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

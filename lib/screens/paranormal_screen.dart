@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'story_screen.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 class ParanormalScreen extends StatefulWidget {
   @override
@@ -57,66 +58,72 @@ From that day forward, Emily avoided the road altogether. But no matter how hard
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Paranormal Stories')),
+      appBar: AppBar(title: const Text('Paranormal Stories')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: ListView.builder(
-            itemCount: stories.length,
-            itemBuilder: (context, index) {
-              final story = stories[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Card(
-                  color: Colors.black38,
-                  shape: StadiumBorder(),
-                  elevation: 8,
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StoryScreen(
-                            title: story['title']!,
-                            imagePath: story['image']!,
-                            content: story['content']!,
+          child: SimpleGestureDetector(
+            onHorizontalSwipe: (direction) {
+              if (direction == SwipeDirection.right) {
+                Navigator.pop(context);
+              }
+            },
+            child: ListView.builder(
+              itemCount: stories.length,
+              itemBuilder: (context, index) {
+                final story = stories[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Card(
+                    color: Colors.black38,
+                    shape: const StadiumBorder(),
+                    elevation: 8,
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StoryScreen(
+                              title: story['title']!,
+                              imagePath: story['image']!,
+                              content: story['content']!,
+                            ),
+                          ),
+                        );
+                      },
+                      leading: Image.asset(
+                        story['image']!,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                      title: Text(
+                        story['title']!,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          story['description']!,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
                           ),
                         ),
-                      );
-                    },
-                    leading: Image.asset(
-                      story['image']!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(
-                      story['title']!,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
                       ),
+                      contentPadding: const EdgeInsets.all(16.0),
                     ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        story['description']!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.all(16.0),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 }
-
