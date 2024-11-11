@@ -61,28 +61,18 @@ From that day forward, Emily avoided the road altogether. But no matter how hard
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: stories.map((story) {
+          child: ListView.builder(
+            itemCount: stories.length,
+            itemBuilder: (context, index) {
+              final story = stories[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15), // Adjust horizontal padding
-                  decoration: BoxDecoration(
-                    color: Colors.black38,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: InkWell(
+                child: Card(
+                  color: Colors.black38,
+                  shape: StadiumBorder(),
+                  elevation: 8,
+                  child: ListTile(
                     onTap: () {
-                      // Navigate to StoryScreen with the story details
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -94,33 +84,39 @@ From that day forward, Emily avoided the road altogether. But no matter how hard
                         ),
                       );
                     },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          story['title']!,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          story['description']!,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
+                    leading: Image.asset(
+                      story['image']!,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
                     ),
+                    title: Text(
+                      story['title']!,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        story['description']!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.all(16.0),
                   ),
                 ),
               );
-            }).toList(),
+            },
           ),
         ),
       ),
     );
   }
 }
+

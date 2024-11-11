@@ -4,6 +4,7 @@ import 'paranormal_screen.dart';
 import 'urban_legend_screen.dart';
 import 'real_life_screen.dart';
 import 'folklore_screen.dart';
+import 'completed_stories_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget _buildImageBox(String imagePath, String title, Widget screen) {
+  Widget _buildImageBox(String imagePath, String title, Widget screen,
+      {TextStyle? textStyle}) {
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -22,8 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       child: Container(
-        height: 150,
-        width: 150,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(imagePath),
@@ -31,15 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           borderRadius: BorderRadius.circular(8),
         ),
-        alignment: Alignment.center,
-        child: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            backgroundColor: Colors.black54,
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          child: Text(
+            title,
+            style: textStyle ?? const TextStyle(color: Colors.white, fontSize: 18),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -48,81 +47,112 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ChillInk'),
-      ),
+      appBar: AppBar(title: const Text('ChillInk')),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.black54,
-              ),
-              child: const Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.black38,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/MainMenu.png'),
+                  fit: BoxFit.cover,
                 ),
-                textAlign: TextAlign.center,
+              ),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Main Menu',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              title: const Text('Profile', style: TextStyle(fontSize: 16)),
+            _buildDrawerItem(
+                icon: Icons.person,
+                text: 'Profile',
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+                }),
+            _buildDrawerItem(
+              icon: Icons.check_circle,
+              text: 'Completed Stories',
               onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              title: const Text('Contact', style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Contact us at ChillInk@gmail.com')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CompletedStoriesScreen()),
                 );
               },
             ),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              title: const Text('Settings', style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Coming Soon in Next Update')),
-                );
-              },
-            ),
+            _buildDrawerItem(
+                icon: Icons.email,
+                text: 'Contact',
+                onTap: () {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Contact us at ChillInk@gmail.com')),
+                  );
+                }),
+            _buildDrawerItem(
+                icon: Icons.settings,
+                text: 'Settings',
+                onTap: () {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Coming Soon in Next Update')),
+                  );
+                }),
           ],
         ),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
+          child: GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 20.0,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildImageBox('assets/images/paranormal.jpg', 'Paranormal', ParanormalScreen()),
-                  _buildImageBox('assets/images/urban_legend.jpg', 'Urban Legend', UrbanLegendScreen()),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildImageBox('assets/images/real_life.jpg', 'Real Life', RealLifeScreen()),
-                  _buildImageBox('assets/images/folklore.jpg', 'Folklore', FolkloreScreen()),
-                ],
-              ),
+              _buildImageBox('assets/images/paranormal.jpg', 'Paranormal',
+                  ParanormalScreen(),
+                  textStyle: const TextStyle(
+                      fontFamily: 'FontMain', fontSize: 32.0)),
+              _buildImageBox('assets/images/urban_legend.jpg', 'Urban Legend',
+                  UrbanLegendScreen(),
+                  textStyle: const TextStyle(
+                      fontFamily: 'FontMain', fontSize: 32.0)),
+              _buildImageBox('assets/images/real_life.jpg', 'Real Life',
+                  RealLifeScreen(),
+                  textStyle: const TextStyle(
+                      fontFamily: 'FontMain', fontSize: 32.0)),
+              _buildImageBox('assets/images/folklore.jpg', 'Folklore',
+                  FolkloreScreen(),
+                  textStyle: const TextStyle(
+                      fontFamily: 'FontMain', fontSize: 32.0)),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerItem(
+      {required IconData icon,
+        required String text,
+        required GestureTapCallback onTap}) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      leading: Icon(icon, color: Colors.black54),
+      title: Text(
+        text,
+        style: const TextStyle(fontSize: 16),
+      ),
+      onTap: onTap,
     );
   }
 }
