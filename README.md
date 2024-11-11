@@ -1,16 +1,3 @@
 # chillink_app
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ChillInk is an interactive mobile app designed to immerse users in a collection of chilling, scary stories. The app organizes tales into various genres, each offering a selection of eerie narratives to explore. Users can navigate seamlessly through different story screens, enhancing the experience with features like Stack for layered storytelling, Layouts for responsive design, Gesture Detection for interactive actions (such as dragging and swiping), and Grid View for an organized story selection interface.
